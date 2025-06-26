@@ -1,179 +1,314 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Md Sahadul Hasan Arian // Software Engineer & AI Researcher</title>
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #020617; /* slate-950 */
+        }
+
+        /* The 3D scene container */
+        #spline-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        /* Ensure content is above the 3D scene */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Active nav link style */
+        .nav-link.active .nav-text {
+            color: #5eead4; /* teal-300 */
+            font-weight: 700;
+        }
+        .nav-link.active .nav-indicator {
+            width: 3rem;
+            background-color: #5eead4; /* teal-300 */
+        }
+
+        /* Glassmorphism with glowing border effect */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6); /* slate-900/60 */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease-in-out;
+        }
+        .glass-card:hover {
+            border-color: rgba(94, 234, 212, 0.5); /* teal-300/50 */
+            box-shadow: 0 0 20px rgba(94, 234, 212, 0.1);
+            transform: translateY(-4px);
+        }
+        
+        /* Command Palette styles */
+        #command-palette-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        #command-palette {
+            background-color: rgba(15, 23, 42, 0.8); /* slate-900/80 */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .command-item.selected {
+            background-color: rgba(94, 234, 212, 0.1);
         }
     </style>
 </head>
-<body class="font-sans">
-    <header>
-        <nav>
-            <!-- Navigation can be minimal for a single-page site -->
-        </nav>
-    </header>
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <section id="hero" class="bg-white py-20 px-4 text-center">
-            <h1 class="text-5xl lg:text-7xl font-bold text-gray-900">Md Sahadul Hasan Arian</h1>
-            <p class="text-2xl lg:text-3xl text-gray-600 mt-2">Software Engineer & AI Researcher</p>
-            <p class="text-lg text-gray-600 mt-6">
-                <a href="tel:+8801781345479" class="text-blue-600 hover:underline">+8801781345479</a> | 
-                <a href="mailto:ari1337an@gmail.com" class="text-blue-600 hover:underline">ari1337an@gmail.com</a> | 
-                Dhaka, Bangladesh
-            </p>
-        </section>
-        <section id="education" class="py-12 lg:py-16 px-4">
-            <h2 class="text-3xl lg:text-4xl font-semibold text-gray-800 mb-8 mt-12">Education</h2>
-            <div class="mb-8">
-                <h3 class="text-xl lg:text-2xl font-semibold text-gray-900 mb-1">Bachelor of Science - BS, Computer Science and Engineering</h3>
-                <p class="text-base lg:text-lg text-gray-800 leading-relaxed">North South University, Dhaka, Bangladesh</p>
-                <p class="text-base lg:text-lg text-gray-700 leading-relaxed">Year: 2023</p>
-                <p class="text-base lg:text-lg text-gray-700 leading-relaxed">GPA: 3.90/4.00</p>
-            </div>
-        </section>
-        <section id="ventures" class="bg-gray-50 py-12 lg:py-16 px-4">
-            <h2 class="text-3xl lg:text-4xl font-semibold text-gray-800 mb-8 mt-12">Business Ventures</h2>
-            <div class="mb-8">
-                <h3 class="text-xl lg:text-2xl font-semibold text-gray-900 mb-1">
-                    <a href="https://vocablet.io" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">vocablet.io</a>
-                </h3>
-                <p class="text-base lg:text-lg text-gray-800 leading-relaxed">AlphaWolf Ventures, Inc.</p>
-                <p class="text-base lg:text-lg text-gray-700 leading-relaxed">Launched: May 2024</p>
-                <p class="text-base lg:text-lg text-gray-800 mt-3 mb-2 leading-relaxed">Responsibilities:</p>
-                <ul class="list-disc list-inside pl-4 text-base lg:text-lg text-gray-800 leading-relaxed space-y-1">
-                    <li class="mb-1">Backend services & APIs</li>
-                    <li class="mb-1">Rate Limiting</li>
-                    <li class="mb-1">Stripe Payment Processor</li>
-                    <li class="mb-1">DevOps & Cloud Provision</li>
-                    <li class="mb-1">Database Provision</li>
-                    <li class="mb-1">GA4 Analytics</li>
-                    <li class="mb-1">Google Ads Marketing</li>
-                    <li class="mb-1">Email Marketing</li>
-                    <li>Google Tag Manager</li>
+<body class="bg-slate-950 text-slate-400 antialiased selection:bg-teal-500/20 selection:text-teal-300">
+
+    <!-- Interactive 3D Background -->
+    <div id="spline-container" class="hidden lg:block">
+        <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.94/build/spline-viewer.js"></script>
+        <spline-viewer url="https://prod.spline.design/AVgI-plGrLd2YgG9/scene.splinecode"></spline-viewer>
+    </div>
+
+    <!-- Data from JSON -->
+    <script>
+        const data = {
+          "name": "Md Sahadul Hasan Arian",
+          "title": "Software Engineer & AI Researcher",
+          "tagline": "Founder @ Tensorify.io | AI Trainer @ Invisible",
+          "contact": {
+            "email": "ari1337an@gmail.com",
+            "github": "https://github.com/ari1337an",
+            "linkedin": "https://www.linkedin.com/in/md-sahadul-hasan-arian/"
+          },
+          "about": "I’m a Full Stack Software Engineer and AI Researcher who’s been coding since age 12. Between 2020–2022, I competed on Codeforces, reaching Green, sharpening my algorithmic skills. I’ve published 4 research papers in AI/Deep Learning and have 1 year of industry experience at Invisible Technologies, contributing to RLHF projects powering top LLMs. I wrote production code for training pipelines, ranked model responses, crafted multi-turn conversations, and ensured quality through rigorous evaluation. My expertise covers scalable SaaS platforms with strict RBAC, Payment Processor Integration, and deep learning models for NLP and 2D/3D Computer Vision using PyTorch. I blend research rigor, deep algorithms, and pragmatic engineering. Currently focused on building intelligent, production-ready systems. Open to roles demanding innovation and technical excellence.",
+          "skills": ["Python", "TypeScript", "Node.js", "PyTorch", "AI/ML", "LLMs", "React", "Go", "Java", "Docker", "Cloud Infra", "DevOps"],
+          "projects": [
+            { "name": "vocablet.io", "description": "Co-founded and developed a platform, handling backend services, Stripe payments, DevOps, and marketing analytics.", "url": "https://vocablet.io", "tech": ["Node.js", "Stripe", "DevOps"] },
+            { "name": "AI Powered Exam System", "description": "Built an online exam platform with MCQ/Audio questions, AI-powered auto-grading, and performance analytics.", "url": "https://github.com/ari1337an/Exam-Cohort-System", "tech": ["AI", "Auto-Grading", "Web Dev"] },
+            { "name": "Facial Recognition Encrypted Cloud Vault", "description": "Developed a serverless Android app for secure cloud storage using facial recognition to encrypt/decrypt files.", "url": "https://github.com/ari1337an/Drivecryptor", "tech": ["Android", "Firebase", "Facial Recognition"] },
+            { "name": "Unsupervised Tooth Segmentation", "description": "Adapted real and synthetic medical datasets for unsupervised part segmentation of human jaws using point clouds.", "url": "https://doi.org/10.1016/j.ijmedinf.2024.105769", "tech": ["Deep Learning", "3D Vision", "PyTorch"] },
+            { "name": "Dental Loop Chatbot", "description": "Finetuned Llama 2 (7B & 13B) with a RAG system on dental guidelines to create a specialized medical chatbot.", "url": "https://doi.org/10.3390/software3040029", "tech": ["LLM", "Finetuning", "RAG"] }
+          ],
+          "footer": "Press <kbd class='font-sans'>Cmd</kbd> + <kbd class='font-sans'>K</kbd> to navigate"
+        };
+    </script>
+
+    <div class="content-wrapper mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-20 lg:px-24 lg:py-0">
+        <div class="lg:flex lg:justify-between lg:gap-16">
+            
+            <!-- Left Column: Header & Navigation -->
+            <header id="header" class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:py-24 transition-opacity duration-500">
+                <div>
+                    <h1 class="text-4xl font-extrabold tracking-tight text-slate-200 sm:text-5xl" id="header-name"></h1>
+                    <h2 class="mt-3 text-lg font-bold tracking-tight text-slate-200 sm:text-xl" id="header-title"></h2>
+                    <p class="mt-4 max-w-xs leading-normal" id="header-tagline"></p>
+                    
+                    <nav class="nav hidden lg:block mt-16" aria-label="In-page navigation">
+                        <ul class="w-max" id="nav-list">
+                            <li><a class="group flex items-center py-3 nav-link" href="#about"><span class="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-teal-300"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-teal-300">About</span></a></li>
+                            <li><a class="group flex items-center py-3 nav-link" href="#skills"><span class="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-teal-300"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-teal-300">Skills</span></a></li>
+                            <li><a class="group flex items-center py-3 nav-link" href="#projects"><span class="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-teal-300"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-teal-300">Projects</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <ul class="ml-1 mt-8 flex items-center" aria-label="Social media">
+                    <li class="mr-5 shrink-0"><a id="social-github" class="block text-slate-400 hover:text-teal-300 transition-colors" href="#" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><span class="sr-only">GitHub</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-6 w-6" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a></li>
+                    <li class="mr-5 shrink-0"><a id="social-linkedin" class="block text-slate-400 hover:text-teal-300 transition-colors" href="#" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><span class="sr-only">LinkedIn</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"></path></svg></a></li>
                 </ul>
-            </div>
-        </section>
-        <section id="experience" class="py-12 lg:py-16 px-4 bg-white">
-            <h2 class="text-3xl lg:text-4xl font-semibold text-gray-800 mb-8 mt-12">Experience</h2>
-            <div class="mb-8">
-                <h3 class="text-xl lg:text-2xl font-semibold text-gray-900 mb-1">Advanced AI Trainer (Software Engineering)</h3>
-                <p class="text-base lg:text-lg text-gray-800 leading-relaxed">Invisible Technologies</p>
-                <p class="text-base lg:text-lg text-gray-700 leading-relaxed">April 2024 – Present | United States - Remote</p>
-                <p class="text-base lg:text-lg text-gray-800 mt-3 mb-2 leading-relaxed">Responsibilities:</p>
-                <ul class="list-disc list-inside pl-4 text-base lg:text-lg text-gray-800 leading-relaxed space-y-1">
-                    <li class="mb-1">Fixed responses between real user and popular a LLM model(s) for RLHF Process</li>
-                    <li>Fixed codes/responses of AI models for Python/JavaScript/Kotlin/Dart/Go/R/Java/Frontend and others</li>
-                </ul>
-            </div>
-        </section>
-        <section id="technical-projects" class="bg-gray-50 py-12 lg:py-16 px-4">
-            <h2 class="text-3xl lg:text-4xl font-semibold text-gray-800 mb-8 mt-12">Technical Projects</h2>
-            <div class="mb-8">
-                <h3 class="text-xl lg:text-2xl font-semibold text-gray-900 mb-1">
-                    <a href="https://github.com/ari1337an/Exam-Cohort-System" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">AI Powered Exam System</a>
-                </h3>
-                <p class="text-base lg:text-lg text-gray-700 leading-relaxed">January 2022 - May 2022</p>
-                <p class="text-base lg:text-lg text-gray-800 mt-3 leading-relaxed">Built an online exam platform with MCQ and Audio question modalities, featuring AI-powered auto-grading. Added random question/option shuffling and export of student performance to spreadsheets.</p>
-            </div>
-            <div class="mb-8">
-                <h3 class="text-xl lg:text-2xl font-semibold text-gray-900 mb-1">
-                    <a href="https://github.com/ari1337an/Drivecryptor" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Facial Recognition Powered Encrypted Cloud Storage Vault App</a>
-                </h3>
-                <p class="text-base lg:text-lg text-gray-700 leading-relaxed">June 2022 - December 2022</p>
-                <p class="text-base lg:text-lg text-gray-800 mt-3 leading-relaxed">Developed a cross-platform serverless Android app for secure cloud storage using encrypted content and Face ID. Implemented facial recognition AI Integration to encrypt and decrypt files with a unique key based on user features.</p>
-            </div>
-        </section>
-        <section id="research-projects" class="py-12 lg:py-16 px-4 bg-white">
-            <h2 class="text-3xl lg:text-4xl font-semibold text-gray-800 mb-8 mt-12">AI Research Projects</h2>
-            <div class="mb-8">
-                <h3 class="text-xl lg:text-2xl font-semibold text-gray-900 mb-1">
-                    <a href="https://doi.org/10.1016/j.ijmedinf.2024.105769" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Unsupervised tooth segmentation...</a>
-                </h3>
-                <p class="text-base lg:text-lg text-gray-700 leading-relaxed">Published: December 19, 2024</p>
-                <p class="text-base lg:text-lg text-gray-800 mt-3 leading-relaxed">Adapted the domain of real and synthetic of medical grade dataset (human jaw dataset) for part segmentation. Created synthetic jaw dataset for the study purpose with medical data augmentations within pointcloud application.</p>
-            </div>
-            <div class="mb-8">
-                <h3 class="text-xl lg:text-2xl font-semibold text-gray-900 mb-1">
-                    <a href="https://doi.org/10.1007/s42452-023-05503-8" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Pseudo labelling workflow...</a>
-                </h3>
-                <p class="text-base lg:text-lg text-gray-700 leading-relaxed">Published: October 5, 2023</p>
-                <p class="text-base lg:text-lg text-gray-800 mt-3 leading-relaxed">Designing Research Strategy & Running project experiments in PyTorch to predict age from radiographs. Provisioning Experiments and Writing manuscript.</p>
-            </div>
-            <div class="mb-8">
-                <h3 class="text-xl lg:text-2xl font-semibold text-gray-900 mb-1">
-                    <a href="https://doi.org/10.3390/software3040029" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Dental Loop Chatbot...</a>
-                </h3>
-                <p class="text-base lg:text-lg text-gray-700 leading-relaxed">Published: December 17, 2024</p>
-                <p class="text-base lg:text-lg text-gray-800 mt-3 leading-relaxed">Finetuned Llama 2 7B and 13B LLM with/or without RAG system on Australian and UK dental guidelines and textbooks. Finetuned embedding models & manuscripts for peer-reviewed journals.</p>
-            </div>
-            <div class="mb-8">
-                <h3 class="text-xl lg:text-2xl font-semibold text-gray-900 mb-1">
-                    <a href="https://doi.org/10.1002/ail2.101" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">An Application of 3D Vision Transformers...</a>
-                </h3>
-                <p class="text-base lg:text-lg text-gray-700 leading-relaxed">Published: September 3, 2024</p>
-                <p class="text-base lg:text-lg text-gray-800 mt-3 leading-relaxed">Inlay and Onlay Classification Model improvements to 90% accuracy from a 60% accuracy achieved by previous literature. Explainable AI integration in the experiemnts to further solidify the claims of the models performance in medical field.</p>
-            </div>
-        </section>
-        <section id="skills" class="bg-gray-50 py-12 lg:py-16 px-4">
-            <h2 class="text-3xl lg:text-4xl font-semibold text-gray-800 mb-8 mt-12">Skills</h2>
-            <div class="mb-8">
-                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Industry Knowledge</h3>
-                <ul class="list-disc list-inside pl-4 text-base lg:text-lg text-gray-800 leading-relaxed space-y-1">
-                    <li class="mb-1">Software Infrastructure</li>
-                    <li class="mb-1">Start-up Ventures</li>
-                    <li class="mb-1">Cloud Computing</li>
-                    <li class="mb-1">Artificial Intelligence (AI)</li>
-                    <li class="mb-1">Large Language Models (LLM)</li>
-                    <li class="mb-1">Context</li>
-                    <li class="mb-1">Information Retrieval</li>
-                    <li class="mb-1">Document Retrieval</li>
-                    <li class="mb-1">Transformers</li>
-                    <li class="mb-1">3D</li>
-                    <li class="mb-1">Deep Learning</li>
-                    <li class="mb-1">Research Skills</li>
-                    <li class="mb-1">Supervised Learning</li>
-                    <li class="mb-1">Unsupervised Learning</li>
-                    <li class="mb-1">Classification</li>
-                    <li class="mb-1">TypeScript</li>
-                    <li class="mb-1">CI/CD</li>
-                    <li class="mb-1">Algorithms</li>
-                    <li class="mb-1">Express.js</li>
-                    <li>Project Management</li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Tools & Technologies</h3>
-                <ul class="list-disc list-inside pl-4 text-base lg:text-lg text-gray-800 leading-relaxed space-y-1">
-                    <li class="mb-1">PyTorch</li>
-                    <li class="mb-1">Java</li>
-                    <li class="mb-1">NodeJS</li>
-                    <li class="mb-1">ReactJS</li>
-                    <li class="mb-1">Tailwind CSS</li>
-                    <li class="mb-1">Sequelize.js</li>
-                    <li class="mb-1">Relational Databases</li>
-                    <li class="mb-1">Firebase</li>
-                    <li class="mb-1">Node.js</li>
-                    <li class="mb-1">React Native</li>
-                    <li class="mb-1">React.js</li>
-                    <li class="mb-1">JavaScript</li>
-                    <li class="mb-1">C++</li>
-                    <li class="mb-1">Python (Programming Language)</li>
-                    <li>PHP</li>
-                </ul>
-            </div>
-        </section>
-    </main>
-    <footer class="text-center py-8 text-gray-700 text-sm">
-        <p>&copy; 2024 Md Sahadul Hasan Arian. All rights reserved.</p>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/motion@10/dist/motion.umd.js"></script>
-    <script src="js/script.js"></script>
+            </header>
+
+            <!-- Right Column: Main Content -->
+            <main id="content" class="pt-24 lg:w-1/2 lg:py-24">
+                <section id="about" aria-label="About Me" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
+                    <p class="text-lg text-slate-300" id="about-text"></p>
+                </section>
+
+                <section id="skills" aria-label="Skills" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
+                    <h3 class="text-slate-200 font-bold text-lg mb-4">Core Technologies</h3>
+                    <div class="flex flex-wrap gap-2" id="skills-list">
+                        <!-- Skills injected by JS -->
+                    </div>
+                </section>
+
+                <section id="projects" aria-label="Selected Projects" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
+                    <ul class="group/list space-y-4" id="projects-list">
+                        <!-- Projects injected by JS -->
+                    </ul>
+                </section>
+
+                <footer class="text-center text-sm text-slate-500" id="footer-text"></footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Command Palette -->
+    <div id="command-palette-overlay" class="fixed inset-0 z-40 hidden">
+        <div id="command-palette" class="fixed top-1/4 left-1/2 -translate-x-1/2 w-full max-w-lg rounded-lg shadow-2xl overflow-hidden">
+            <input type="text" id="command-input" placeholder="Type a command or search..." class="w-full p-4 bg-transparent text-slate-200 focus:outline-none">
+            <ul id="command-list" class="max-h-72 overflow-y-auto">
+                <!-- Commands injected by JS -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DATA POPULATION ---
+            document.getElementById('header-name').textContent = data.name;
+            document.getElementById('header-title').textContent = data.title;
+            document.getElementById('header-tagline').textContent = data.tagline;
+            document.getElementById('about-text').textContent = data.about;
+            document.getElementById('footer-text').innerHTML = data.footer;
+            document.getElementById('social-github').href = data.contact.github;
+            document.getElementById('social-linkedin').href = data.contact.linkedin;
+
+            const skillsList = document.getElementById('skills-list');
+            data.skills.forEach(skill => {
+                const badge = document.createElement('span');
+                badge.className = 'bg-teal-400/10 text-teal-300 text-sm font-medium px-3 py-1.5 rounded-full';
+                badge.textContent = skill;
+                skillsList.appendChild(badge);
+            });
+
+            const projectsList = document.getElementById('projects-list');
+            data.projects.forEach(project => {
+                const item = document.createElement('li');
+                item.className = 'mb-12';
+                const techBadges = project.tech.map(t => `<div class="flex items-center rounded-full bg-teal-400/10 px-3 py-1 text-xs font-medium leading-5 text-teal-300">${t}</div>`).join('');
+                item.innerHTML = `
+                    <a href="${project.url}" target="_blank" rel="noreferrer noopener" class="block p-6 rounded-lg glass-card">
+                        <h3 class="font-bold leading-snug text-slate-200 group-hover:text-teal-300 text-lg">${project.name}</h3>
+                        <p class="mt-2 text-sm leading-normal text-slate-400">${project.description}</p>
+                        <ul class="mt-3 flex flex-wrap gap-2" aria-label="Technologies used">${techBadges}</ul>
+                    </a>`;
+                projectsList.appendChild(item);
+            });
+
+            // --- JAVASCRIPT INTERACTIVITY ---
+
+            // 1. Scroll-Driven Header Animation
+            const header = document.getElementById('header');
+            const content = document.getElementById('content');
+            const navList = document.getElementById('nav-list');
+            
+            const scrollObserver = new IntersectionObserver(entries => {
+                header.style.opacity = entries[0].isIntersecting ? '1' : '0.4';
+                navList.style.opacity = entries[0].isIntersecting ? '1' : '0.4';
+            }, { threshold: 0.1 });
+            scrollObserver.observe(content);
+
+            // 2. Active Nav Highlighting
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const navObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                        });
+                    }
+                });
+            }, { rootMargin: "-30% 0px -70% 0px" });
+            sections.forEach(section => navObserver.observe(section));
+
+            // 3. Command Palette Logic
+            const commandPaletteOverlay = document.getElementById('command-palette-overlay');
+            const commandInput = document.getElementById('command-input');
+            const commandList = document.getElementById('command-list');
+            let selectedCommandIndex = 0;
+
+            const commands = [
+                { name: 'Go to About', action: () => document.getElementById('about').scrollIntoView({behavior: 'smooth'}) },
+                { name: 'Go to Skills', action: () => document.getElementById('skills').scrollIntoView({behavior: 'smooth'}) },
+                { name: 'Go to Projects', action: () => document.getElementById('projects').scrollIntoView({behavior: 'smooth'}) },
+                { name: 'View GitHub', action: () => window.open(data.contact.github, '_blank') },
+                { name: 'View LinkedIn', action: () => window.open(data.contact.linkedin, '_blank') },
+                { name: 'Contact via Email', action: () => window.location.href = `mailto:${data.contact.email}` },
+            ];
+
+            const renderCommands = (filter = '') => {
+                commandList.innerHTML = '';
+                const filteredCommands = commands.filter(c => c.name.toLowerCase().includes(filter.toLowerCase()));
+                filteredCommands.forEach((command, index) => {
+                    const item = document.createElement('li');
+                    item.className = 'p-3 text-slate-300 cursor-pointer command-item';
+                    if (index === selectedCommandIndex) item.classList.add('selected');
+                    item.textContent = command.name;
+                    item.onclick = () => executeCommand(command);
+                    commandList.appendChild(item);
+                });
+                if (filteredCommands.length === 0) {
+                    commandList.innerHTML = `<li class="p-3 text-slate-500">No results found.</li>`;
+                }
+            };
+
+            const executeCommand = (command) => {
+                command.action();
+                togglePalette(false);
+            };
+
+            const togglePalette = (show) => {
+                if (show) {
+                    commandPaletteOverlay.classList.remove('hidden');
+                    commandInput.focus();
+                    selectedCommandIndex = 0;
+                    renderCommands();
+                } else {
+                    commandPaletteOverlay.classList.add('hidden');
+                    commandInput.value = '';
+                }
+            };
+
+            document.addEventListener('keydown', e => {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                    e.preventDefault();
+                    togglePalette(!commandPaletteOverlay.classList.contains('hidden'));
+                }
+                if (e.key === 'Escape' && !commandPaletteOverlay.classList.contains('hidden')) {
+                    togglePalette(false);
+                }
+                if (!commandPaletteOverlay.classList.contains('hidden')) {
+                    const items = commandList.querySelectorAll('.command-item');
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        selectedCommandIndex = (selectedCommandIndex + 1) % items.length;
+                        renderCommands(commandInput.value);
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        selectedCommandIndex = (selectedCommandIndex - 1 + items.length) % items.length;
+                        renderCommands(commandInput.value);
+                    } else if (e.key === 'Enter') {
+                        const filteredCommands = commands.filter(c => c.name.toLowerCase().includes(commandInput.value.toLowerCase()));
+                        if (filteredCommands[selectedCommandIndex]) {
+                            executeCommand(filteredCommands[selectedCommandIndex]);
+                        }
+                    }
+                }
+            });
+
+            commandInput.addEventListener('input', () => {
+                selectedCommandIndex = 0;
+                renderCommands(commandInput.value);
+            });
+            
+            commandPaletteOverlay.addEventListener('click', (e) => {
+                if (e.target === commandPaletteOverlay) togglePalette(false);
+            });
+        });
+    </script>
 </body>
 </html>
