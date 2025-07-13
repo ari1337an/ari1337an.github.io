@@ -1,314 +1,748 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Md Sahadul Hasan Arian // Software Engineer & AI Researcher</title>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter -->
+    <title>Md Sahadul Hasan Arian | AI & Software Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #020617; /* slate-950 */
+        /* ------------------- */
+        /* --- CSS STYLES ---- */
+        /* ------------------- */
+
+        :root {
+            --bg-dark: #0a192f;
+            --bg-light: #112240;
+            --text-light: #ccd6f6;
+            --text-medium: #8892b0;
+            --accent: #64ffda;
+            --accent-dark: rgba(100, 255, 218, 0.1);
+            --shadow: rgba(2, 12, 27, 0.7);
+            --font-sans: 'Inter', sans-serif;
         }
 
-        /* The 3D scene container */
-        #spline-container {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--text-medium) var(--bg-dark);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+        }
+
+        main {
+            padding: 0 150px;
+        }
+
+        section {
+            min-height: 80vh;
+            padding: 100px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            white-space: nowrap;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            position: relative;
+            top: 0px;
+            width: 300px;
+            height: 1px;
+            margin-left: 20px;
+            background-color: var(--bg-light);
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #fff;
+        }
+
+        p {
+            color: var(--text-medium);
+            margin-bottom: 15px;
+            max-width: 700px;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.5;
+            padding: 0 50px;
+            height: 80px;
+            background-color: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            transition: top 0.3s;
         }
 
-        /* Ensure content is above the 3D scene */
-        .content-wrapper {
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            padding: 10px;
+        }
+        
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        /* --- Hero Section --- */
+        #hero {
+            min-height: 100vh;
+        }
+
+        #hero h1 {
+            font-size: clamp(40px, 8vw, 80px);
+            margin: 0;
+        }
+
+        #hero h3 {
+            font-size: clamp(20px, 5vw, 32px);
+            color: var(--text-medium);
+            margin-top: 10px;
+        }
+
+        #hero p.subtitle {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        #hero .summary {
+            max-width: 600px;
+            margin-top: 25px;
+        }
+
+        .social-links {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .social-links a svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-medium);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover svg {
+            fill: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        /* --- Experience Section (Timeline) --- */
+        .timeline {
             position: relative;
+            max-width: 800px;
+            margin-top: 40px;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--bg-light);
+            top: 0;
+            bottom: 0;
+            left: 20px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px 30px 60px;
+            position: relative;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: var(--bg-dark);
+            border: 2px solid var(--accent);
+            top: 15px;
+            left: 13px;
+            border-radius: 50%;
             z-index: 1;
         }
 
-        /* Active nav link style */
-        .nav-link.active .nav-text {
-            color: #5eead4; /* teal-300 */
-            font-weight: 700;
-        }
-        .nav-link.active .nav-indicator {
-            width: 3rem;
-            background-color: #5eead4; /* teal-300 */
-        }
-
-        /* Glassmorphism with glowing border effect */
-        .glass-card {
-            background: rgba(15, 23, 42, 0.6); /* slate-900/60 */
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease-in-out;
-        }
-        .glass-card:hover {
-            border-color: rgba(94, 234, 212, 0.5); /* teal-300/50 */
-            box-shadow: 0 0 20px rgba(94, 234, 212, 0.1);
-            transform: translateY(-4px);
+        .timeline-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 5px;
         }
         
-        /* Command Palette styles */
-        #command-palette-overlay {
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
+        .timeline-content h3 span {
+            color: var(--accent);
         }
-        #command-palette {
-            background-color: rgba(15, 23, 42, 0.8); /* slate-900/80 */
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        .timeline-date {
+            font-family: monospace;
+            color: var(--text-medium);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
         }
-        .command-item.selected {
-            background-color: rgba(94, 234, 212, 0.1);
+
+        /* --- Skills Section --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .skill-category h3 {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--bg-light);
+            padding-bottom: 10px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background-color: var(--accent-dark);
+            color: var(--text-light);
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .skill-tag:hover {
+            background-color: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        /* --- Projects & Publications Section --- */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background-color: var(--bg-light);
+            padding: 25px;
+            border-radius: 5px;
+            box-shadow: 0 10px 30px -15px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 20px 30px -15px var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon svg {
+            width: 40px;
+            height: 40px;
+            color: var(--accent);
+        }
+        
+        .card-link svg {
+            width: 22px;
+            height: 22px;
+            color: var(--text-medium);
+            transition: color 0.3s ease;
+        }
+        .card-link:hover svg {
+            color: var(--accent);
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .card .publisher {
+            color: var(--text-medium);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        /* --- Education Section --- */
+        #education .edu-card {
+            background-color: var(--bg-light);
+            padding: 30px;
+            border-radius: 5px;
+            max-width: 800px;
+            margin-top: 40px;
+            border-left: 4px solid var(--accent);
+        }
+        .edu-card h3 {
+            margin-bottom: 5px;
+        }
+        .edu-card .degree {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        .edu-card .date-gpa {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-medium);
+            font-family: monospace;
+            margin-top: 10px;
+        }
+
+        /* --- Contact Section --- */
+        #contact {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #contact h2 {
+            justify-content: center;
+        }
+        #contact h2::after {
+            display: none;
+        }
+        #contact .contact-text {
+            margin: 20px auto;
+        }
+        .contact-button {
+            display: inline-block;
+            background-color: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 1rem 1.75rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+        .contact-button:hover {
+            background-color: var(--accent-dark);
+            color: var(--accent);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-medium);
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1080px) {
+            main {
+                padding: 0 100px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 0 50px;
+            }
+            nav {
+                padding: 0 25px;
+            }
+            .nav-links {
+                display: none; /* Simple hide for mobile, can be replaced with hamburger menu */
+            }
+            h2::after {
+                width: 100px;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            main {
+                padding: 0 25px;
+            }
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-400 antialiased selection:bg-teal-500/20 selection:text-teal-300">
+<body>
 
-    <!-- Interactive 3D Background -->
-    <div id="spline-container" class="hidden lg:block">
-        <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.94/build/spline-viewer.js"></script>
-        <spline-viewer url="https://prod.spline.design/AVgI-plGrLd2YgG9/scene.splinecode"></spline-viewer>
-    </div>
+    <!-- =========== NAVIGATION =========== -->
+    <nav>
+        <a href="#hero" class="logo">A.</a>
+        <ul class="nav-links">
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#experience" class="nav-link">Experience</a></li>
+            <li><a href="#skills" class="nav-link">Skills</a></li>
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+            <li><a href="#publications" class="nav-link">Publications</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+    </nav>
 
-    <!-- Data from JSON -->
-    <script>
-        const data = {
-          "name": "Md Sahadul Hasan Arian",
-          "title": "Software Engineer & AI Researcher",
-          "tagline": "Founder @ Tensorify.io | AI Trainer @ Invisible",
-          "contact": {
-            "email": "ari1337an@gmail.com",
-            "github": "https://github.com/ari1337an",
-            "linkedin": "https://www.linkedin.com/in/md-sahadul-hasan-arian/"
-          },
-          "about": "I’m a Full Stack Software Engineer and AI Researcher who’s been coding since age 12. Between 2020–2022, I competed on Codeforces, reaching Green, sharpening my algorithmic skills. I’ve published 4 research papers in AI/Deep Learning and have 1 year of industry experience at Invisible Technologies, contributing to RLHF projects powering top LLMs. I wrote production code for training pipelines, ranked model responses, crafted multi-turn conversations, and ensured quality through rigorous evaluation. My expertise covers scalable SaaS platforms with strict RBAC, Payment Processor Integration, and deep learning models for NLP and 2D/3D Computer Vision using PyTorch. I blend research rigor, deep algorithms, and pragmatic engineering. Currently focused on building intelligent, production-ready systems. Open to roles demanding innovation and technical excellence.",
-          "skills": ["Python", "TypeScript", "Node.js", "PyTorch", "AI/ML", "LLMs", "React", "Go", "Java", "Docker", "Cloud Infra", "DevOps"],
-          "projects": [
-            { "name": "vocablet.io", "description": "Co-founded and developed a platform, handling backend services, Stripe payments, DevOps, and marketing analytics.", "url": "https://vocablet.io", "tech": ["Node.js", "Stripe", "DevOps"] },
-            { "name": "AI Powered Exam System", "description": "Built an online exam platform with MCQ/Audio questions, AI-powered auto-grading, and performance analytics.", "url": "https://github.com/ari1337an/Exam-Cohort-System", "tech": ["AI", "Auto-Grading", "Web Dev"] },
-            { "name": "Facial Recognition Encrypted Cloud Vault", "description": "Developed a serverless Android app for secure cloud storage using facial recognition to encrypt/decrypt files.", "url": "https://github.com/ari1337an/Drivecryptor", "tech": ["Android", "Firebase", "Facial Recognition"] },
-            { "name": "Unsupervised Tooth Segmentation", "description": "Adapted real and synthetic medical datasets for unsupervised part segmentation of human jaws using point clouds.", "url": "https://doi.org/10.1016/j.ijmedinf.2024.105769", "tech": ["Deep Learning", "3D Vision", "PyTorch"] },
-            { "name": "Dental Loop Chatbot", "description": "Finetuned Llama 2 (7B & 13B) with a RAG system on dental guidelines to create a specialized medical chatbot.", "url": "https://doi.org/10.3390/software3040029", "tech": ["LLM", "Finetuning", "RAG"] }
-          ],
-          "footer": "Press <kbd class='font-sans'>Cmd</kbd> + <kbd class='font-sans'>K</kbd> to navigate"
-        };
-    </script>
-
-    <div class="content-wrapper mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-20 lg:px-24 lg:py-0">
-        <div class="lg:flex lg:justify-between lg:gap-16">
-            
-            <!-- Left Column: Header & Navigation -->
-            <header id="header" class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:py-24 transition-opacity duration-500">
-                <div>
-                    <h1 class="text-4xl font-extrabold tracking-tight text-slate-200 sm:text-5xl" id="header-name"></h1>
-                    <h2 class="mt-3 text-lg font-bold tracking-tight text-slate-200 sm:text-xl" id="header-title"></h2>
-                    <p class="mt-4 max-w-xs leading-normal" id="header-tagline"></p>
-                    
-                    <nav class="nav hidden lg:block mt-16" aria-label="In-page navigation">
-                        <ul class="w-max" id="nav-list">
-                            <li><a class="group flex items-center py-3 nav-link" href="#about"><span class="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-teal-300"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-teal-300">About</span></a></li>
-                            <li><a class="group flex items-center py-3 nav-link" href="#skills"><span class="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-teal-300"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-teal-300">Skills</span></a></li>
-                            <li><a class="group flex items-center py-3 nav-link" href="#projects"><span class="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-teal-300"></span><span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-teal-300">Projects</span></a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <ul class="ml-1 mt-8 flex items-center" aria-label="Social media">
-                    <li class="mr-5 shrink-0"><a id="social-github" class="block text-slate-400 hover:text-teal-300 transition-colors" href="#" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><span class="sr-only">GitHub</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-6 w-6" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a></li>
-                    <li class="mr-5 shrink-0"><a id="social-linkedin" class="block text-slate-400 hover:text-teal-300 transition-colors" href="#" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><span class="sr-only">LinkedIn</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"></path></svg></a></li>
-                </ul>
-            </header>
-
-            <!-- Right Column: Main Content -->
-            <main id="content" class="pt-24 lg:w-1/2 lg:py-24">
-                <section id="about" aria-label="About Me" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
-                    <p class="text-lg text-slate-300" id="about-text"></p>
-                </section>
-
-                <section id="skills" aria-label="Skills" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
-                    <h3 class="text-slate-200 font-bold text-lg mb-4">Core Technologies</h3>
-                    <div class="flex flex-wrap gap-2" id="skills-list">
-                        <!-- Skills injected by JS -->
-                    </div>
-                </section>
-
-                <section id="projects" aria-label="Selected Projects" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
-                    <ul class="group/list space-y-4" id="projects-list">
-                        <!-- Projects injected by JS -->
-                    </ul>
-                </section>
-
-                <footer class="text-center text-sm text-slate-500" id="footer-text"></footer>
-            </main>
-        </div>
-    </div>
-
-    <!-- Command Palette -->
-    <div id="command-palette-overlay" class="fixed inset-0 z-40 hidden">
-        <div id="command-palette" class="fixed top-1/4 left-1/2 -translate-x-1/2 w-full max-w-lg rounded-lg shadow-2xl overflow-hidden">
-            <input type="text" id="command-input" placeholder="Type a command or search..." class="w-full p-4 bg-transparent text-slate-200 focus:outline-none">
-            <ul id="command-list" class="max-h-72 overflow-y-auto">
-                <!-- Commands injected by JS -->
+    <main>
+        <!-- =========== HERO =========== -->
+        <section id="hero">
+            <p class="subtitle">Hi, my name is</p>
+            <h1 class="name">Md Sahadul Hasan Arian.</h1>
+            <h3 class="tagline">I build intelligent systems for the web.</h3>
+            <p class="summary">
+                I’m a Full Stack Software Engineer and AI Researcher with a passion for building intelligent, production-ready systems. With a foundation in competitive programming and 4 published research papers, I blend deep algorithmic knowledge with pragmatic engineering to solve complex problems in AI and software.
+            </p>
+            <ul class="social-links">
+                <li>
+                    <a href="https://www.linkedin.com/in/ari1337an/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                </li>
+                <!-- TODO: CUSTOMIZE - Add GitHub link if available -->
+                <!-- <li>
+                    <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </li> -->
             </ul>
-        </div>
-    </div>
+        </section>
+
+        <!-- =========== ABOUT =========== -->
+        <section id="about">
+            <h2>About Me</h2>
+            <div>
+                <p>
+                    I’m a Full Stack Software Engineer and AI Researcher who’s been coding since age 12. Between 2020–2022, I competed on Codeforces, reaching Green, sharpening my algorithmic skills. I’ve published 4 research papers in AI/Deep Learning and have 1 year of industry experience at Invisible Technologies, contributing to RLHF projects powering top LLMs.
+                </p>
+                <p>
+                    I wrote production code for training pipelines, ranked model responses, crafted multi-turn conversations, and ensured quality through rigorous evaluation. My expertise covers scalable SaaS platforms with strict RBAC, Payment Processor Integration, and deep learning models for NLP and 2D/3D Computer Vision using PyTorch.
+                </p>
+                <p>
+                    I blend research rigor, deep algorithms, and pragmatic engineering. Currently focused on building intelligent, production-ready systems. Open to roles demanding innovation and technical excellence.
+                </p>
+            </div>
+        </section>
+
+        <!-- =========== EXPERIENCE =========== -->
+        <section id="experience">
+            <h2>Where I've Worked</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Advanced AI Trainer <span>@ <a href="https://www.invisible.co/" target="_blank" rel="noopener noreferrer">Invisible</a></span></h3>
+                        <p class="timeline-date">April 2024 - Present</p>
+                        <p>Contributed to multiple Reinforcement Learning from Human Feedback (RLHF) projects for top-ranking LLMs. Wrote production-grade code for training/evaluation pipelines, rated and ranked thousands of model responses, and served on the Quality Control (QC) team to ensure data integrity and alignment with user intent.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>AI Engineer <span>@ <a href="https://www.fiverr.com/" target="_blank" rel="noopener noreferrer">Fiverr (Freelance)</a></span></h3>
+                        <p class="timeline-date">November 2023 - April 2024</p>
+                        <p>Collaborated with PhD students on 3D Computer Vision research projects. Worked with Spain's classified aerial 3D point cloud dataset, implementing and refining complex algorithms for data analysis and model development.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== SKILLS =========== -->
+        <section id="skills">
+            <h2>My Skillset</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>AI & Machine Learning</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Deep Learning</span>
+                        <span class="skill-tag">Large Language Models (LLM)</span>
+                        <span class="skill-tag">RLHF</span>
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">Transformers</span>
+                        <span class="skill-tag">3D Computer Vision</span>
+                        <span class="skill-tag">RAG</span>
+                        <span class="skill-tag">Finetuning</span>
+                        <span class="skill-tag">Explainable AI (XAI)</span>
+                        <span class="skill-tag">Domain Adaptation</span>
+                        <span class="skill-tag">Supervised Learning</span>
+                        <span class="skill-tag">Unsupervised Learning</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Backend & Cloud</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Express.js</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">Relational Databases</span>
+                        <span class="skill-tag">Sequelize.js</span>
+                        <span class="skill-tag">Amazon Web Services (AWS)</span>
+                        <span class="skill-tag">Firebase</span>
+                        <span class="skill-tag">CI/CD</span>
+                        <span class="skill-tag">Cloud Computing</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Frontend</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">ReactJS</span>
+                        <span class="skill-tag">Next.js</span>
+                        <span class="skill-tag">React Native</span>
+                        <span class="skill-tag">Tailwind CSS</span>
+                        <span class="skill-tag">Android Native</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Concepts & Tools</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Algorithms</span>
+                        <span class="skill-tag">Software Architecture</span>
+                        <span class="skill-tag">Quality Control</span>
+                        <span class="skill-tag">Project Management</span>
+                        <span class="skill-tag">Research Skills</span>
+                        <span class="skill-tag">Communication</span>
+                        <span class="skill-tag">AES-256 Encryption</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== PROJECTS =========== -->
+        <section id="projects">
+            <h2>Things I've Built</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h4.5M12 12.75a.75.75 0 000-1.5.75.75 0 000 1.5z" /></svg>
+                        </div>
+                    </div>
+                    <h3>Full Stack AI Powered Exam System</h3>
+                    <p>A platform for conducting exams with MCQ & Microviva (audio) modalities. Features AI-powered auto-grading, question/answer shuffling, human re-evaluation, and performance export.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l-3 3m3-3l3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" /></svg>
+                        </div>
+                    </div>
+                    <h3>Facial Recognition Encrypted Cloud Vault</h3>
+                    <p>A serverless, cross-platform Android app to store files on Google Drive, protected by AES-256 encryption and a user's Face ID. Files are encrypted/decrypted using a unique key generated from facial features.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z" /></svg>
+                        </div>
+                    </div>
+                    <h3>LLM Finetuning & RAG for Dental Guidelines</h3>
+                    <p>Finetuned Llama 2 (7B & 13B) on Australian/UK dental guidelines. The study compared RAG vs. non-RAG approaches and finetuned embedding models to maximize factual accuracy for specialized knowledge.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== PUBLICATIONS =========== -->
+        <section id="publications">
+            <h2>My Research</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Unsupervised tooth segmentation from 3D scans using domain adaptation</h3>
+                    <p class="publisher">International Journal of Medical Informatics (Jan 2025)</p>
+                    <a href="https://www.sciencedirect.com/science/article/pii/S1386505624004325" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Read Publication">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 17v-4h-2v4h-3v-6h-2l5-6 5 6h-2v6h-3z"/></svg>
+                    </a>
+                </div>
+                <div class="card">
+                    <h3>Dental Loop Chatbot: A Prototype LLM Framework for Dentistry</h3>
+                    <p class="publisher">Software (Dec 2024)</p>
+                    <a href="https://www.mdpi.com/2674-113X/3/4/29" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Read Publication">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 17v-4h-2v4h-3v-6h-2l5-6 5 6h-2v6h-3z"/></svg>
+                    </a>
+                </div>
+                <div class="card">
+                    <h3>An Application of 3D Vision Transformers and XAI in Prosthetic Dentistry</h3>
+                    <p class="publisher">Applied AI Letters (Sep 2024)</p>
+                    <a href="https://onlinelibrary.wiley.com/doi/10.1002/ail2.101" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Read Publication">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 17v-4h-2v4h-3v-6h-2l5-6 5 6h-2v6h-3z"/></svg>
+                    </a>
+                </div>
+                <div class="card">
+                    <h3>Explainable Age & Gender Estimation using Dental Radiographs</h3>
+                    <p class="publisher">SN Applied Sciences (Oct 2023)</p>
+                    <a href="https://link.springer.com/article/10.1007/s42452-023-05503-8" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Read Publication">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 17v-4h-2v4h-3v-6h-2l5-6 5 6h-2v6h-3z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== EDUCATION =========== -->
+        <section id="education">
+            <h2>Education</h2>
+            <div class="edu-card">
+                <h3>North South University</h3>
+                <p class="degree">Bachelor of Science - Computer Science and Engineering</p>
+                <div class="date-gpa">
+                    <span>2020 - 2023</span>
+                    <span>CGPA: 3.90 / 4.00</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== CONTACT =========== -->
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <p class="contact-text">
+                I'm currently open to new opportunities and would love to discuss how my skills in AI and software engineering can contribute to your team. Whether you have a question or just want to connect, feel free to reach out.
+            </p>
+            <!-- TODO: CUSTOMIZE - Replace with your actual email address -->
+            <a href="mailto:your.email@example.com" class="contact-button">Say Hello</a>
+        </section>
+    </main>
+
+    <footer>
+        <div>Designed & Built by Md Sahadul Hasan Arian</div>
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- DATA POPULATION ---
-            document.getElementById('header-name').textContent = data.name;
-            document.getElementById('header-title').textContent = data.title;
-            document.getElementById('header-tagline').textContent = data.tagline;
-            document.getElementById('about-text').textContent = data.about;
-            document.getElementById('footer-text').innerHTML = data.footer;
-            document.getElementById('social-github').href = data.contact.github;
-            document.getElementById('social-linkedin').href = data.contact.linkedin;
+        /* ------------------- */
+        /* --- JAVASCRIPT ---- */
+        /* ------------------- */
 
-            const skillsList = document.getElementById('skills-list');
-            data.skills.forEach(skill => {
-                const badge = document.createElement('span');
-                badge.className = 'bg-teal-400/10 text-teal-300 text-sm font-medium px-3 py-1.5 rounded-full';
-                badge.textContent = skill;
-                skillsList.appendChild(badge);
-            });
-
-            const projectsList = document.getElementById('projects-list');
-            data.projects.forEach(project => {
-                const item = document.createElement('li');
-                item.className = 'mb-12';
-                const techBadges = project.tech.map(t => `<div class="flex items-center rounded-full bg-teal-400/10 px-3 py-1 text-xs font-medium leading-5 text-teal-300">${t}</div>`).join('');
-                item.innerHTML = `
-                    <a href="${project.url}" target="_blank" rel="noreferrer noopener" class="block p-6 rounded-lg glass-card">
-                        <h3 class="font-bold leading-snug text-slate-200 group-hover:text-teal-300 text-lg">${project.name}</h3>
-                        <p class="mt-2 text-sm leading-normal text-slate-400">${project.description}</p>
-                        <ul class="mt-3 flex flex-wrap gap-2" aria-label="Technologies used">${techBadges}</ul>
-                    </a>`;
-                projectsList.appendChild(item);
-            });
-
-            // --- JAVASCRIPT INTERACTIVITY ---
-
-            // 1. Scroll-Driven Header Animation
-            const header = document.getElementById('header');
-            const content = document.getElementById('content');
-            const navList = document.getElementById('nav-list');
-            
-            const scrollObserver = new IntersectionObserver(entries => {
-                header.style.opacity = entries[0].isIntersecting ? '1' : '0.4';
-                navList.style.opacity = entries[0].isIntersecting ? '1' : '0.4';
-            }, { threshold: 0.1 });
-            scrollObserver.observe(content);
-
-            // 2. Active Nav Highlighting
-            const sections = document.querySelectorAll('section[id]');
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-link');
-            const navObserver = new IntersectionObserver(entries => {
+
+            // --- Intersection Observer for scroll animations ---
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // --- Intersection Observer for active nav link highlighting ---
+            const navObserverOptions = {
+                root: null,
+                rootMargin: '-50% 0px -50% 0px', // Center of the viewport
+                threshold: 0
+            };
+
+            const navObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const id = entry.target.getAttribute('id');
                         navLinks.forEach(link => {
-                            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
                         });
                     }
                 });
-            }, { rootMargin: "-30% 0px -70% 0px" });
-            sections.forEach(section => navObserver.observe(section));
+            }, navObserverOptions);
 
-            // 3. Command Palette Logic
-            const commandPaletteOverlay = document.getElementById('command-palette-overlay');
-            const commandInput = document.getElementById('command-input');
-            const commandList = document.getElementById('command-list');
-            let selectedCommandIndex = 0;
-
-            const commands = [
-                { name: 'Go to About', action: () => document.getElementById('about').scrollIntoView({behavior: 'smooth'}) },
-                { name: 'Go to Skills', action: () => document.getElementById('skills').scrollIntoView({behavior: 'smooth'}) },
-                { name: 'Go to Projects', action: () => document.getElementById('projects').scrollIntoView({behavior: 'smooth'}) },
-                { name: 'View GitHub', action: () => window.open(data.contact.github, '_blank') },
-                { name: 'View LinkedIn', action: () => window.open(data.contact.linkedin, '_blank') },
-                { name: 'Contact via Email', action: () => window.location.href = `mailto:${data.contact.email}` },
-            ];
-
-            const renderCommands = (filter = '') => {
-                commandList.innerHTML = '';
-                const filteredCommands = commands.filter(c => c.name.toLowerCase().includes(filter.toLowerCase()));
-                filteredCommands.forEach((command, index) => {
-                    const item = document.createElement('li');
-                    item.className = 'p-3 text-slate-300 cursor-pointer command-item';
-                    if (index === selectedCommandIndex) item.classList.add('selected');
-                    item.textContent = command.name;
-                    item.onclick = () => executeCommand(command);
-                    commandList.appendChild(item);
-                });
-                if (filteredCommands.length === 0) {
-                    commandList.innerHTML = `<li class="p-3 text-slate-500">No results found.</li>`;
+            // Observe all sections except hero
+            document.querySelectorAll('section[id]').forEach(section => {
+                if (section.id !== 'hero') {
+                    navObserver.observe(section);
                 }
-            };
-
-            const executeCommand = (command) => {
-                command.action();
-                togglePalette(false);
-            };
-
-            const togglePalette = (show) => {
-                if (show) {
-                    commandPaletteOverlay.classList.remove('hidden');
-                    commandInput.focus();
-                    selectedCommandIndex = 0;
-                    renderCommands();
-                } else {
-                    commandPaletteOverlay.classList.add('hidden');
-                    commandInput.value = '';
-                }
-            };
-
-            document.addEventListener('keydown', e => {
-                if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                    e.preventDefault();
-                    togglePalette(!commandPaletteOverlay.classList.contains('hidden'));
-                }
-                if (e.key === 'Escape' && !commandPaletteOverlay.classList.contains('hidden')) {
-                    togglePalette(false);
-                }
-                if (!commandPaletteOverlay.classList.contains('hidden')) {
-                    const items = commandList.querySelectorAll('.command-item');
-                    if (e.key === 'ArrowDown') {
-                        e.preventDefault();
-                        selectedCommandIndex = (selectedCommandIndex + 1) % items.length;
-                        renderCommands(commandInput.value);
-                    } else if (e.key === 'ArrowUp') {
-                        e.preventDefault();
-                        selectedCommandIndex = (selectedCommandIndex - 1 + items.length) % items.length;
-                        renderCommands(commandInput.value);
-                    } else if (e.key === 'Enter') {
-                        const filteredCommands = commands.filter(c => c.name.toLowerCase().includes(commandInput.value.toLowerCase()));
-                        if (filteredCommands[selectedCommandIndex]) {
-                            executeCommand(filteredCommands[selectedCommandIndex]);
-                        }
-                    }
-                }
-            });
-
-            commandInput.addEventListener('input', () => {
-                selectedCommandIndex = 0;
-                renderCommands(commandInput.value);
             });
             
-            commandPaletteOverlay.addEventListener('click', (e) => {
-                if (e.target === commandPaletteOverlay) togglePalette(false);
-            });
+            // --- Hide/show navbar on scroll ---
+            let lastScrollTop = 0;
+            const navbar = document.querySelector('nav');
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop && scrollTop > 80) {
+                    // Downscroll
+                    navbar.style.top = '-80px';
+                } else {
+                    // Upscroll
+                    navbar.style.top = '0';
+                }
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            }, false);
         });
     </script>
+
 </body>
 </html>
